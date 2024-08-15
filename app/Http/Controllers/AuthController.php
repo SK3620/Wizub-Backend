@@ -36,5 +36,19 @@ class AuthController extends Controller
         }
 
         return ['api_token' => $user->createToken('my-token')->plainTextToken];
+    // Emailの重複チェック
+    public function checkEmail(Request $request)
+    {
+     // メールアドレスが重複しているか確認
+    $emailExists = User::where('email', $request->email)->exists();
+
+    // メールアドレスが重複しているかどうかをレスポンスで返す
+    return response()->json([
+        'name' => '',
+        'email' => $request->email,
+        'password' => '',
+        'is_duplicated_email' => $emailExists,
+        'api_token' => ''
+    ]);
     }
 }
