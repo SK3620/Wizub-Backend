@@ -5,20 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     public function signUp(Request $request)
     {
+        // email重複以外のバリデーションはアプリ側で細かく実装しているため、laravel側では実際は不要
         $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:users',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password)]);
 
-        return $user;
+        $token = $user->createToken('api_token')->plainTextToken;
+
+        return [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password, 
+            'is_duplicated_email' => null, 
+            'api_token' => $token
+        ];
     }
 
     public function signIn(Request $request)
@@ -28,14 +38,25 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        // usersテーブルから指定されたemailカラムの値に一致する最初のレコードを取得
         $user = User::where('email', $request->email)->first();
 
-        // クエストで送られてきたパスワードをデータベースに保存されているハッシュ化されたパスワードと比較
+        // パスワードの一致をチェック
         if (!$user || !Hash::check($request->password, $user->password)) {
             return ['error' => 'The provided credentials are incorrect'];
         }
 
-        return ['api_token' => $user->createToken('my-token')->plainTextToken];
+        $token = $user->createToken('api_token')->plainTextToken;
+
+        return [
+            'name' => '',
+            'email' => $request->email,
+            'password' => $request->password, 
+            'is_duplicated_email' => null, 
+            'api_token' => $token
+        ];
+    }
+
     // Emailの重複チェック
     public function checkEmail(Request $request)
     {
