@@ -10,11 +10,7 @@ class TranscriptController extends Controller
 {
     public function getTranscript(Request $request)
     {
-        $request->validate([
-            'video_id' => 'required'
-        ]);
-
-        $video_id = $request->video_id;
+        $video_id = $request->query('video_id');
 
         $scriptPath = base_path('myenv/scripts/get_transcript.py'); // Pythonスクリプトのパス
 
