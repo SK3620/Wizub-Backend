@@ -18,7 +18,7 @@ def get_transcript(video_id):
                 'duration': tr['duration']
             })
 
-    return transcripts
+    return {'transcripts': transcripts}
 
 if __name__ == "__main__":
     video_id = sys.argv[1]
