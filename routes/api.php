@@ -23,4 +23,7 @@ Route::middleware('api')->post('/sign_up', 'App\Http\Controllers\AuthController@
 Route::middleware('api')->post('/sign_in', 'App\Http\Controllers\AuthController@signIn');
 Route::middleware('api')->post('/check_email', 'App\Http\Controllers\AuthController@checkEmail');
 
-Route::middleware('api')->get('/get_transcript', 'App\Http\Controllers\TranscriptController@getTranscript');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('api')->get('/get_transcript', 'App\Http\Controllers\TranscriptController@getTranscript');
+    Route::middleware('api')->get('/get_open_ai_answer', 'App\Http\Controllers\OpenAIController@getOpenAIResponse');
+});
