@@ -9,6 +9,9 @@ def get_transcript(video_id):
     transcript = transcript_list.find_transcript(['en'])
     transcript_data = transcript.fetch()
 
+    # IDのカウンターを初期化
+    id_counter = 1
+
     transcripts = []
     for i in range(0, len(transcript_data), 2):
         # 1つ目の要素を取得
@@ -27,10 +30,14 @@ def get_transcript(video_id):
         combined_text = text1 + " " + text2
 
         transcripts.append({
+            'id': id_counter,
             'text': combined_text,
             'start': start,
             'duration': duration
         })
+
+        # IDカウンターをインクリメント
+        id_counter += 1
 
     return {'transcripts': transcripts}
 
