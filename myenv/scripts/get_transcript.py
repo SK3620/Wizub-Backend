@@ -1,4 +1,3 @@
-# get_transcript.py
 import sys
 import json
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -11,12 +10,27 @@ def get_transcript(video_id):
     transcript_data = transcript.fetch()
 
     transcripts = []
-    for tr in transcript_data:
-            transcripts.append({
-                'text': tr['text'],
-                'start': tr['start'],
-                'duration': tr['duration']
-            })
+    for i in range(0, len(transcript_data), 2):
+        # 1つ目の要素を取得
+        text1 = transcript_data[i]['text']
+        start = transcript_data[i]['start']
+        duration = transcript_data[i]['duration']
+
+        # 2つ目の要素が存在するかを確認し、存在すれば取得
+        if i + 1 < len(transcript_data):
+            text2 = transcript_data[i + 1]['text']
+            duration += transcript_data[i + 1]['duration']  # durationを加算
+        else:
+            text2 = ''
+
+        # text1とtext2を結合して'text'に入れる
+        combined_text = text1 + " " + text2
+
+        transcripts.append({
+            'text': combined_text,
+            'start': start,
+            'duration': duration
+        })
 
     return {'transcripts': transcripts}
 
