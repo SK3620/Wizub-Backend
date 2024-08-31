@@ -32,6 +32,7 @@ def get_transcript(video_id):
         transcripts.append({
             'id': id_counter,
             'text': combined_text,
+            'jaText': '',
             'start': start,
             'duration': duration
         })
