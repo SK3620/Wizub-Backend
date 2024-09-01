@@ -35,4 +35,7 @@ return [
         'api_key' => env('OPEN_AI_API_KEY'),
     ],
 
+    'you_tube' => [
+        'api_key' => env('GOOGLE_API_KEY')
+    ]
 ];
