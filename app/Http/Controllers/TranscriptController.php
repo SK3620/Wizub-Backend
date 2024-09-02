@@ -8,6 +8,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class TranscriptController extends Controller
 {
+    // 指定の動画のトランスクリプト取得
     public function getTranscript(Request $request)
     {
         $video_id = $request->query('video_id');
