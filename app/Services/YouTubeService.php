@@ -6,6 +6,8 @@ use Google_Client;
 use Google_Service_YouTube;
 use Google_Service_Exception;
 use Google_Exception;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Video;
 
 class YouTubeService
 {
@@ -34,7 +36,31 @@ class YouTubeService
 
         try {
             $searchResponse = $this->youtube->search->listSearch('snippet', $parameters);
-            return $searchResponse;
+
+            // レスポンスフォーマットの調整
+            $videos = array_map(function ($item) {
+
+                // Userを取得
+                $user = Auth::user();
+
+                // DBに同じ"videoId"が存在しているかチェック
+                $isVideoAlreadySaved = Video::where('user_id', $user->id)
+                    ->where('video_id', $item['id']['videoId'])
+                    ->exists();
+
+                return [
+                    'video_id' => $item['id']['videoId'],
+                    'title' => $item['snippet']['title'],
+                    'thumbnail_url' => $item['snippet']['thumbnails']['default']['url'],
+                    'is_video_already_saved' => $isVideoAlreadySaved,
+                ];
+            }, $searchResponse['items']);
+
+            // アプリ側のフォーマットに合わせたレスポンスを返す
+            return [
+                'items' => $videos,
+                'next_page_token' => $searchResponse['nextPageToken'] ?? '',
+            ];
         } catch (Google_Service_Exception $e) {
             throw new \Exception("Google API service error: " . $e->getMessage());
         } catch (Google_Exception $e) {
