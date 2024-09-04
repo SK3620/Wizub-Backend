@@ -61,4 +61,51 @@ class TranscriptController extends Controller
         // レスポンスを返す
         return response()->json(['transcripts' => $transcripts]);
     }
+
+    // トランスクリプトを更新
+    public function update(Request $request)
+    {
+        // ユーザーを取得
+        $user = Auth::user();
+
+        // リクエストのバリデーション
+        $validator = Validator::make($request->all(), [
+            'transcripts' => 'required|array',
+            'transcripts.*.transcript_id' => 'required|integer', // それぞれの動画のトランスクリプトのID
+            'transcripts.*.en_subtitle' => 'nullable|string', // 英語字幕
+            'transcripts.*.ja_subtitle' => 'nullable|string', // 日本語字幕
+            'transcripts.*.start' => 'required|numeric', // 字幕表示開始時間
+            'transcripts.*.duration' => 'required|numeric', // 字幕表示時間
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        // リクエストからvideoのidを取得
+        $id = $request->query('id');
+
+        // video_idでVideoモデルを検索し、そのトランスクリプトを取得
+        $video = $user->videos()->where('id', $id)->with('transcripts')->first();
+
+        // videoが存在しない場合、エラーレスポンスを返す
+        if (!$video) {
+            return response()->json(['error' => 'Video not found or not owned by the user'], 404);
+        }
+
+        // トランスクリプトを更新
+        foreach ($request->transcripts as $transcriptData) {
+
+            $transcript = $video->transcripts->firstWhere('transcript_id', $transcriptData['transcript_id']);
+
+            $transcript->update([
+                'en_subtitle' => $transcriptData['en_subtitle'] ?? '',
+                'ja_subtitle' => $transcriptData['ja_subtitle'] ?? '',
+                'start' => $transcriptData['start'],
+                'duration' => $transcriptData['duration'],
+            ]);
+        }
+
+        return response()->json(['message' => 'Transcripts updated successfully!']);
+    }
 }
