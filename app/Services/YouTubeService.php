@@ -21,7 +21,7 @@ class YouTubeService
         $this->youtube = new Google_Service_YouTube($this->client);
     }
 
-    public function searchVideos($query, $nextPageToken = null) // 初期検索時はデフォルトでnull
+    public function searchVideos($query, $nextPageToken = null) // 追加で動画を取得でない場合はnull
     {
         $parameters = [
             'q' => $query, // 検索値
@@ -43,12 +43,24 @@ class YouTubeService
                 // Userを取得
                 $user = Auth::user();
 
+                // デフォルト値を設定
+                $isVideoAlreadySaved = false;
+                $id = null;
+
                 // DBに同じ"videoId"が存在しているかチェック
-                $isVideoAlreadySaved = Video::where('user_id', $user->id)
+                $video = Video::where('user_id', $user->id)
                     ->where('video_id', $item['id']['videoId'])
-                    ->exists();
+                    ->first();
+
+                // 存在している場合
+                if ($video) {
+                    $isVideoAlreadySaved = true;
+                    // アプリ側に"id"も返す
+                    $id = $video->id;
+                }
 
                 return [
+                    'id' => $id,
                     'video_id' => $item['id']['videoId'],
                     'title' => $item['snippet']['title'],
                     'thumbnail_url' => $item['snippet']['thumbnails']['default']['url'],
@@ -56,7 +68,7 @@ class YouTubeService
                 ];
             }, $searchResponse['items']);
 
-            // アプリ側のフォーマットに合わせたレスポンスを返す
+            // レスポンスのフォーマット調整
             return [
                 'items' => $videos,
                 'next_page_token' => $searchResponse['nextPageToken'] ?? '',
