@@ -31,4 +31,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('api')->get('/get_open_ai_answer', 'App\Http\Controllers\OpenAIController@getOpenAIResponse');
     Route::middleware('api')->post('/store_transcripts', 'App\Http\Controllers\VideoController@store');
     Route::middleware('api')->get('/get_saved_videos', 'App\Http\Controllers\VideoController@index');
+    Route::middleware('api')->post('/check_video_already_saved', 'App\Http\Controllers\VideoController@checkVideoAlreadySaved');
 });
