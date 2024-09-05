@@ -27,4 +27,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('api')->get('/get_transcript', 'App\Http\Controllers\TranscriptController@getTranscript');
     Route::middleware('api')->get('/get_open_ai_answer', 'App\Http\Controllers\OpenAIController@getOpenAIResponse');
     Route::middleware('api')->get('/search', 'App\Http\Controllers\YouTubeController@search');
+    Route::middleware('api')->post('/store_transcripts', 'App\Http\Controllers\VideoController@store');
 });
