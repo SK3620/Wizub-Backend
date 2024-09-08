@@ -18,12 +18,10 @@ class YouTubeController extends Controller
     {
         // 検索値取得
         $query = $request->query('query');
-        // 追加動画を取得
-        $nextPageToken = $request->query('next_page_token');
 
         try {
             // 検索リクエスト
-            $videos = $this->youtubeService->searchVideos($query, $nextPageToken);
+            $videos = $this->youtubeService->searchVideos($query);
             return response()->json($videos);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

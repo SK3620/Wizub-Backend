@@ -21,18 +21,13 @@ class YouTubeService
         $this->youtube = new Google_Service_YouTube($this->client);
     }
 
-    public function searchVideos($query, $nextPageToken = null) // 追加で動画を取得でない場合はnull
+    public function searchVideos($query)
     {
         $parameters = [
             'q' => $query, // 検索値
             'type' => 'video',
             'maxResults' => 10, // 最大10件取得
         ];
-
-        // 追加ページ取得 nullでない場合にのみパラメータに追加
-        if ($nextPageToken) {
-            $parameters['pageToken'] = $nextPageToken;
-        }
 
         try {
             $searchResponse = $this->youtube->search->listSearch('snippet', $parameters);
@@ -70,8 +65,7 @@ class YouTubeService
 
             // レスポンスのフォーマット調整
             return [
-                'items' => $videos,
-                'next_page_token' => $searchResponse['nextPageToken'] ?? '',
+                'items' => $videos
             ];
         } catch (Google_Service_Exception $e) {
             throw new \Exception("Google API service error: " . $e->getMessage());
