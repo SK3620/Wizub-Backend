@@ -32,7 +32,7 @@ def get_transcript(video_id):
         # レスポンスのフォーマット調整
         transcripts.append({
             'id': id_counter, # 暫定で一意性を保証しておく DBへの保存時、プライマリーキーとして自動インクリメント
-            'transcript_id': id_counter, # それぞれの動画のトランスクリプトのID
+            'subtitle_id': id_counter, # それぞれの動画のトランスクリプトのID
             'en_subtitle': combined_text, # 英語字幕
             'ja_subtitle': '', # 日本語字幕 日本語字幕は取得しないため空
             'start': start, # 字幕表示開始時間
