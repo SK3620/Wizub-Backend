@@ -44,7 +44,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // Userが持つ複数のTranscriptを取得するリレーション
+    // Userが持つ複数のSubtitleを取得するリレーション
     public function videos()
     {
         return $this->hasMany(Video::class);

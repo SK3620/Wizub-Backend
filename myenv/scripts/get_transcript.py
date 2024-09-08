@@ -42,7 +42,7 @@ def get_transcript(video_id):
         # IDカウンターをインクリメント
         id_counter += 1
 
-    return {'transcripts': transcripts}
+    return {'subtitles': transcripts}
 
 if __name__ == "__main__":
     video_id = sys.argv[1]

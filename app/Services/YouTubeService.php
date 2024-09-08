@@ -17,7 +17,8 @@ class YouTubeService
     public function __construct()
     {
         $this->client = new Google_Client();
-        $this->client->setDeveloperKey(config('services.you_tube.api_key'));
+        // $this->client->setDeveloperKey(config('services.you_tube.api_key'));
+        $this->client->setDeveloperKey('AIzaSyArJasIXneI5S1wzbpxYKIyz6_REfgatN8');
         $this->youtube = new Google_Service_YouTube($this->client);
     }
 

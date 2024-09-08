@@ -16,7 +16,7 @@ class VideoController extends Controller
         $user = Auth::user();
 
         // ユーザーが保存した動画を取得し、トランスクリプトと共に取得
-        $videos = $user->videos()->with('transcripts')->get();
+        $videos = $user->videos()->with('subtitles')->get();
 
         // レスポンスのフォーマット調整
         $response = $videos->map(function ($video) {
@@ -25,14 +25,14 @@ class VideoController extends Controller
                 'video_id' => $video->video_id, // YouTube動画のID
                 'title' => $video->title ?? '', // 動画のタイトル
                 'thumbnail_url' => $video->thumbnail_url ?? '', // サムネイル
-                'transcripts' => $video->transcripts->map(function ($transcript) {
+                'subtitles' => $video->subtitles->map(function ($subtitle) {
                     return [
-                        'id' => $transcript->id, // モデルのプライマリーキー
-                        'transcript_id' => $transcript->transcript_id, // それぞれの動画のトランスクリプトのID
-                        'en_subtitle' => $transcript->en_subtitle ?? '', // 英語字幕
-                        'ja_subtitle' => $transcript->ja_subtitle ?? '', // 日本語字幕
-                        'start' => $transcript->start, // 字幕表示開始時間
-                        'duration' => $transcript->duration, // 字幕表示時間
+                        'id' => $subtitle->id, // モデルのプライマリーキー
+                        'subtitle_id' => $subtitle->subtitle_id, // それぞれの動画の字幕のID
+                        'en_subtitle' => $subtitle->en_subtitle ?? '', // 英語字幕
+                        'ja_subtitle' => $subtitle->ja_subtitle ?? '', // 日本語字幕
+                        'start' => $subtitle->start, // 字幕表示開始時間
+                        'duration' => $subtitle->duration, // 字幕表示時間
                     ];
                 })->toArray(),
             ];
@@ -48,7 +48,7 @@ class VideoController extends Controller
             'video_id' => 'required', // YouTube動画のID
             'title' => 'required', // 動画のタイトル
             'thumbnail_url' => 'required', // サムネイル
-            'transcripts' => 'required', // トランスクリプト
+            'subtitles' => 'required', // トランスクリプト
         ]);
 
         if ($validator->fails()) {
@@ -65,18 +65,18 @@ class VideoController extends Controller
             'thumbnail_url' => $request->thumbnail_url,
         ]);
 
-        // Transcriptを保存
-        foreach ($request->transcripts as $transcript) {
-            $video->transcripts()->create([
-                'transcript_id' => $transcript['transcript_id'],
-                'en_subtitle' => $transcript['en_subtitle'] ?? '', // laravelのMiddleware\ConvertEmptyStringsToNullで空文字をnullに自動変換をするため、空文字に変換
-                'ja_subtitle' => $transcript['ja_subtitle'] ?? '',
-                'start' => $transcript['start'],
-                'duration' => $transcript['duration'],
+        // 字幕を保存
+        foreach ($request->subtitles as $subtitle) {
+            $video->subtitles()->create([
+                'subtitle_id' => $subtitle['subtitle_id'],
+                'en_subtitle' => $subtitle['en_subtitle'] ?? '', // laravelのMiddleware\ConvertEmptyStringsToNullで空文字をnullに自動変換をするため、空文字に変換
+                'ja_subtitle' => $subtitle['ja_subtitle'] ?? '',
+                'start' => $subtitle['start'],
+                'duration' => $subtitle['duration'],
             ]);
         }
 
-        return response()->json(['message' => 'Video and transcripts saved successfully!']);
+        return response()->json(['message' => 'Video and subtitles saved successfully!']);
     }
 
     // 動画が保存済みか否かチェック
@@ -134,9 +134,9 @@ class VideoController extends Controller
         }
 
         // 動画とその関連するトランスクリプトを削除
-        $video->transcripts()->delete(); // まず関連するトランスクリプトを削除
+        $video->subtitles()->delete(); // まず関連するトランスクリプトを削除
         $video->delete(); // その後動画を削除
 
-        return response()->json(['message' => 'Video and its transcripts deleted successfully!']);
+        return response()->json(['message' => 'Video and its subtitles deleted successfully!']);
     }
 }

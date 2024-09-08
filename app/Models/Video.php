@@ -18,8 +18,8 @@ class Video extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Videoに関連するTranscriptを取得するリレーション
-    public function transcripts()
+    // Videoに関連するSubtitleを取得するリレーション
+    public function subtitles()
     {
         return $this->hasMany(Transcript::class);
     }
