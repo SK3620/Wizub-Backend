@@ -21,6 +21,6 @@ class Video extends Model
     // Videoに関連するSubtitleを取得するリレーション
     public function subtitles()
     {
-        return $this->hasMany(Transcript::class);
+        return $this->hasMany(Subtitle::class);
     }
 }
