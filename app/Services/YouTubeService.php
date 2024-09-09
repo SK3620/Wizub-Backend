@@ -61,6 +61,7 @@ class YouTubeService
                     'title' => $item['snippet']['title'],
                     'thumbnail_url' => $item['snippet']['thumbnails']['medium']['url'],
                     'is_video_already_saved' => $isVideoAlreadySaved,
+                    'subtitles' => []
                 ];
             }, $searchResponse['items']);
 
