@@ -25,6 +25,7 @@ class VideoController extends Controller
                 'video_id' => $video->video_id, // YouTube動画のID
                 'title' => $video->title ?? '', // 動画のタイトル
                 'thumbnail_url' => $video->thumbnail_url ?? '', // サムネイル
+                'is_video_already_saved' => true, // 保存した動画を取得しているためtrue
                 'subtitles' => $video->subtitles->map(function ($subtitle) {
                     return [
                         'id' => $subtitle->id, // モデルのプライマリーキー
