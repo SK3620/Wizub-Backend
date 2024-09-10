@@ -32,6 +32,7 @@ class VideoController extends Controller
                         'subtitle_id' => $subtitle->subtitle_id, // それぞれの動画の字幕のID
                         'en_subtitle' => $subtitle->en_subtitle ?? '', // 英語字幕
                         'ja_subtitle' => $subtitle->ja_subtitle ?? '', // 日本語字幕
+                        'memo' => $subtitle->memo ?? '', // 学習メモ
                         'start' => $subtitle->start, // 字幕表示開始時間
                         'duration' => $subtitle->duration, // 字幕表示時間
                     ];
@@ -72,6 +73,7 @@ class VideoController extends Controller
                 'subtitle_id' => $subtitle['subtitle_id'],
                 'en_subtitle' => $subtitle['en_subtitle'] ?? '', // laravelのMiddleware\ConvertEmptyStringsToNullで空文字をnullに自動変換をするため、空文字に変換
                 'ja_subtitle' => $subtitle['ja_subtitle'] ?? '',
+                'memo' => $subtitle['memo'] ?? '',
                 'start' => $subtitle['start'],
                 'duration' => $subtitle['duration'],
             ]);

@@ -35,6 +35,7 @@ def get_transcript(video_id):
             'subtitle_id': id_counter, # それぞれの動画のトランスクリプトのID
             'en_subtitle': combined_text, # 英語字幕
             'ja_subtitle': '', # 日本語字幕 日本語字幕は取得しないため空
+            'memo': '' , # 学習メモ
             'start': start, # 字幕表示開始時間
             'duration': duration # 字幕表示時間
         })
