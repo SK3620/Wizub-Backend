@@ -2,12 +2,16 @@
 
 namespace App\Services;
 
+use App\Exceptions\Handler;
 use Google_Client;
 use Google_Service_YouTube;
 use Google_Service_Exception;
 use Google_Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Video;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class YouTubeService
 {
@@ -18,7 +22,9 @@ class YouTubeService
     {
         $this->client = new Google_Client();
         // $this->client->setDeveloperKey(config('services.you_tube.api_key'));
-        $this->client->setDeveloperKey('AIzaSyArJasIXneI5S1wzbpxYKIyz6_REfgatN8');
+        $this->client->setDeveloperKey('AIzaSyDz4Hp684pTzBGoPNc7pdpNmHLwaV9J3Nk');
+        // $this->client->setDeveloperKey('AIzaSyDz4Hp684pTzBGoPNc7pdpNmHLwaV9J3N');
+
         $this->youtube = new Google_Service_YouTube($this->client);
     }
 
@@ -70,9 +76,17 @@ class YouTubeService
                 'items' => $videos
             ];
         } catch (Google_Service_Exception $e) {
-            throw new \Exception("Google API service error: " . $e->getMessage());
+            // Google API 特有のエラー処理
+            Log::error('Google Service Exception: ' . $e->getMessage());
+            throw $e;
         } catch (Google_Exception $e) {
-            throw new \Exception("Google client error: " . $e->getMessage());
+            // Google Clientのエラー処理
+            Log::error('Google Exception: ' . $e->getMessage());
+            throw $e;
+        } catch (Exception $e) {
+            // その他のエラー
+            Log::error('Unexpected Exception: ' . $e->getMessage());
+            throw $e;
         }
     }
 }

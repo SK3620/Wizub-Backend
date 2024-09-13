@@ -6,6 +6,8 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException as ValidationValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
+use Google_Service_Exception;
+use Google_Exception;
 
 class Handler extends ExceptionHandler
 {
@@ -42,12 +44,16 @@ class Handler extends ExceptionHandler
     public function render($request, $exception)
     {
         // APIエラーの場合、apiErrorResponseを呼ぶ
-        // WEBエラーの場合、ここでエラーハンドリングを完結する
         if ($request->is('api/*')) {
 
-            // バリデーションエラーの場合 型に気をつける
+            // バリデーションエラー
             if ($exception instanceof \Illuminate\Validation\ValidationException) {
                 return $this->validationErrorResponse($exception);
+            }
+
+            //  GoogleAPIエラー（YouTube動画取得時のエラー)
+            if ($exception instanceof Google_Exception || $exception instanceof \Google_Service_Exception) {
+                return $this->googleApiErrorResponse($exception);
             }
 
             // HTTPエラー処理
@@ -64,7 +70,16 @@ class Handler extends ExceptionHandler
     private function validationErrorResponse(ValidationValidationException $exception)
     {
         // エラーメッセージをフォーマットして返す
-        return response()->error(Response::HTTP_BAD_REQUEST, $exception->errors());
+        return response()->error(Response::HTTP_BAD_REQUEST, '不正なリクエストです。', $exception->errors());
+    }
+
+    // GoogleAPIエラー（YouTube動画取得時のエラー)
+    private function googleApiErrorResponse($exception)
+    {
+        $message = 'YouTube動画の取得に失敗しました。';
+        $detail = $exception->getMessage();
+
+        return response()->error(Response::HTTP_INTERNAL_SERVER_ERROR, $message, $detail);
     }
 
     // HTTPエラー
