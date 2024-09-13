@@ -168,6 +168,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ApiResponseServiceProvider::class, // サービスプロバイダを登録し、laravelアプリケーション内で使用可能にする
     ])->toArray(),
 
     /*
