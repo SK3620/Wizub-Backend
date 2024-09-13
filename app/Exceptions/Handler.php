@@ -7,6 +7,9 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    // 不明なエラー
+    public const UNKNOWN = 999;
+
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
