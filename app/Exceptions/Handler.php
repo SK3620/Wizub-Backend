@@ -51,6 +51,11 @@ class Handler extends ExceptionHandler
                 return $this->validationErrorResponse($exception);
             }
 
+            // 字幕取得Pythonスクリプト実行エラー
+            if ($exception instanceof VideoSubtitleException) {
+                return $this->videoSubtitleGettingErrorResponse($exception);
+            }
+
             //  GoogleAPIエラー（YouTube動画取得時のエラー)
             if ($exception instanceof Google_Exception || $exception instanceof \Google_Service_Exception) {
                 return $this->googleApiErrorResponse($exception);
@@ -71,6 +76,15 @@ class Handler extends ExceptionHandler
     {
         // エラーメッセージをフォーマットして返す
         return response()->error(Response::HTTP_BAD_REQUEST, '不正なリクエストです。', $exception->errors());
+    }
+
+    public function videoSubtitleGettingErrorResponse(VideoSubtitleException $exception)
+    {
+        $code = $exception->getCode();
+        $message = $exception->getMessage();
+        $detail = $exception->getDetail();
+
+        return response()->error($code, $message, $detail);
     }
 
     // GoogleAPIエラー（YouTube動画取得時のエラー)

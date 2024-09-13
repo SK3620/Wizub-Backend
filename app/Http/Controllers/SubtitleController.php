@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\VideoSubtitleException;
 use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class SubtitleController extends Controller
 {
@@ -15,18 +18,32 @@ class SubtitleController extends Controller
     {
         $video_id = $request->query('video_id');
 
-        $scriptPath = base_path('myenv/scripts/get_transcript.py'); // Pythonスクリプトのパス
+        // Pythonスクリプトのパス
+        $scriptPath = base_path('myenv/scripts/get_transcript.py');
 
+        // Processコンポーネントは、外部プログラムやコマンドをPHPスクリプト内で実行するためのもの
         $process = new Process(['python3', $scriptPath, $video_id]);
+        // 実行
         $process->run();
 
-        // エラー処理
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
+        try {
+            // プロセスの成功を確認
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process); // プロセス失敗時に例外をスロー
+            }
 
-        $subtitles = $process->getOutput();
-        return response()->json(json_decode($subtitles, true));
+            // 成功した場合の処理
+            $subtitles = $process->getOutput();
+            // フォーマット化したjsonレスポンスを返却
+            return response()->json(json_decode($subtitles, true));
+        } catch (ProcessFailedException $e) {
+            // 失敗の例外処理
+            Log::error('Process Failed Exception: ' . $e->getMessage());
+            throw new VideoSubtitleException(detail: $e->getMessage());
+        } catch (Exception $e) {
+            // その他のエラー
+            throw $e;
+        }
     }
 
     // すでに保存済みの字幕を取得
