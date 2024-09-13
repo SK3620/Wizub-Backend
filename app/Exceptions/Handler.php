@@ -51,7 +51,9 @@ class Handler extends ExceptionHandler
             }
 
             // HTTPエラー処理
-            return $this->apiErrorResponse($request, $exception);
+            if ($this->isHttpException($exception)) {
+                return $this->apiErrorResponse($request, $exception);
+            }
         }
 
         // 親クラスのrenderメソッド
@@ -68,37 +70,40 @@ class Handler extends ExceptionHandler
     // HTTPエラー
     private function apiErrorResponse($request, $exception)
     {
+        // 例外からステータスコード取得
+        $statusCode = $exception->getStatusCode();
+        // 詳細なエラーメッセージを取得
+        $detial = $exception->getMessage();
+
         // HttpExceptionが発生しているかどうかを確認
         if ($this->isHttpException($exception)) {
-            // 例外からステータスコード取得
-            $statusCode = $exception->getStatusCode();
 
             // ApiServiceProviderで作成したレスポンスマクロ'error'を呼ぶ
             switch ($statusCode) {
                     // ステータスコードを表す定数名"$status"とエラーメッセージ"$message"を指定
                 case 400:
-                    return response()->error(Response::HTTP_BAD_REQUEST, '不正なリクエストです。');
+                    return response()->error(Response::HTTP_BAD_REQUEST, '不正なリクエストです。', $detial);
                 case 401:
                     // app/Http/Middleware/Authenticate.php内でのabort処理によりHandler.phpでUnauthorizedエラーを補足させる
-                    return response()->error(Response::HTTP_UNAUTHORIZED, '認証情報が正しくありません。');
+                    return response()->error(Response::HTTP_UNAUTHORIZED, '認証情報が正しくありません。', $detial);
                 case 403:
-                    return response()->error(Response::HTTP_FORBIDDEN, 'アクセスエラーが発生しました。');
+                    return response()->error(Response::HTTP_FORBIDDEN, 'アクセスエラーが発生しました。', $detial);
                 case 404:
-                    return response()->error(Response::HTTP_NOT_FOUND, '存在しないURLです。');
+                    return response()->error(Response::HTTP_NOT_FOUND, '存在しないURLです。', $detial);
                 case 405:
-                    return response()->error(Response::HTTP_METHOD_NOT_ALLOWED, '無効なリクエストです。');
+                    return response()->error(Response::HTTP_METHOD_NOT_ALLOWED, '無効なリクエストです。', $detial);
                 case 406:
-                    return response()->error(Response::HTTP_NOT_ACCEPTABLE, '受付不可能なリクエスト値です。');
+                    return response()->error(Response::HTTP_NOT_ACCEPTABLE, '受付不可能なリクエスト値です。', $detial);
                 case 408:
-                    return response()->error(Response::HTTP_REQUEST_TIMEOUT, 'リクエストがタイムアウトしました。');
+                    return response()->error(Response::HTTP_REQUEST_TIMEOUT, 'リクエストがタイムアウトしました。', $detial);
                     // 500系エラー（500〜599をまとめて処理）
                 case ($statusCode >= 500 && $statusCode <= 599):
-                    return response()->error($statusCode, 'サーバーでエラーが発生しました。');
+                    return response()->error($statusCode, 'サーバーでエラーが発生しました。', $detial);
                 default:
-                    return response()->error(self::UNKNOWN, 'サーバーで不明なエラーが発生しました。');
+                    return response()->error(self::UNKNOWN, 'サーバーで不明なエラーが発生しました。', $detial);
             }
         }
 
-        return response()->error(self::UNKNOWN, 'サーバーで不明なエラーが発生しました。');
+        return response()->error(self::UNKNOWN, 'サーバーで不明なエラーが発生しました。', $detial);
     }
 }
