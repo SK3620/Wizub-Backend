@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,9 +28,36 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
+        // reportableはログ出力系
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        // renderableはレンダリング系（jsonレスポンス作成/HTML返却）
+        // $this->renderable(function ()) ...
+    }
+
+    // renderメソッドをオーバーライドし、例外発生時に、その例外をどのようにレスポンスとして返すかを決定する
+    // レンダリング系（jsonレスポンス作成/HTML返却）
+    public function render($request, $exception)
+    {
+        // APIエラーの場合、apiErrorResponseを呼ぶ
+        // WEBエラーの場合、ここでエラーハンドリングを完結する
+        if ($request->is('api/*')) {
+
+            // バリデーションエラーの場合
+            if ($exception instanceof ValidationException) {
+                return $this->validationErrorResponse($exception);
+            }
+
+            // HTTPエラー処理
+            return $this->apiErrorResponse($request, $exception);
+        }
+
+        // 親クラスのrenderメソッド
+        return parent::render($request, $exception);
+    }
+
     // バリデーションエラー
     private function validationErrorResponse(ValidationException $exception)
     {
