@@ -35,7 +35,8 @@ class AuthController extends Controller
 
         // パスワードの一致をチェック
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return ['error' => 'The provided credentials are incorrect'];
+            // 一致しない場合は、認証エラーをHandler.phpへ投げる
+            abort(Response::HTTP_UNAUTHORIZED);
         }
 
         $token = $user->createToken('api_token')->plainTextToken;
