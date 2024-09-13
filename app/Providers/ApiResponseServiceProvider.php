@@ -21,10 +21,11 @@ class ApiResponseServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // レスポンスマクロを用いて、Responseに'error'というカスタムメソッドを追加し、一貫したエラーレスポンスを返す
-        Response::macro('error', function ($status, $message) {
+        Response::macro('error', function ($status, $message, $detail = '') {
             return response()->json([
                 'code' => $status,
                 'message' => $message,
+                'detaial' => $detail,
             ], $status);
         });
     }
