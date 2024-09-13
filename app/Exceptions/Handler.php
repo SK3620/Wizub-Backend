@@ -29,6 +29,13 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    // バリデーションエラー
+    private function validationErrorResponse(ValidationException $exception)
+    {
+        // エラーメッセージをフォーマットして返す
+        return response()->error(Response::HTTP_BAD_REQUEST, $exception->errors());
+    }
+
     // HTTPエラー
     private function apiErrorResponse($request, $exception)
     {
