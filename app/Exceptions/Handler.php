@@ -80,7 +80,7 @@ class Handler extends ExceptionHandler
                     return response()->error(Response::HTTP_BAD_REQUEST, '不正なリクエストです。');
                 case 401:
                     // app/Http/Middleware/Authenticate.php内でのabort処理によりHandler.phpでUnauthorizedエラーを補足させる
-                    return response()->error(Response::HTTP_UNAUTHORIZED, '認証エラーが発生しました。');
+                    return response()->error(Response::HTTP_UNAUTHORIZED, '認証情報が正しくありません。');
                 case 403:
                     return response()->error(Response::HTTP_FORBIDDEN, 'アクセスエラーが発生しました。');
                 case 404:
