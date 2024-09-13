@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException as ValidationValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -45,8 +45,8 @@ class Handler extends ExceptionHandler
         // WEBエラーの場合、ここでエラーハンドリングを完結する
         if ($request->is('api/*')) {
 
-            // バリデーションエラーの場合
-            if ($exception instanceof ValidationException) {
+            // バリデーションエラーの場合 型に気をつける
+            if ($exception instanceof \Illuminate\Validation\ValidationException) {
                 return $this->validationErrorResponse($exception);
             }
 
@@ -59,7 +59,7 @@ class Handler extends ExceptionHandler
     }
 
     // バリデーションエラー
-    private function validationErrorResponse(ValidationException $exception)
+    private function validationErrorResponse(ValidationValidationException $exception)
     {
         // エラーメッセージをフォーマットして返す
         return response()->error(Response::HTTP_BAD_REQUEST, $exception->errors());
