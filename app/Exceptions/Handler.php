@@ -98,5 +98,7 @@ class Handler extends ExceptionHandler
                     return response()->error(self::UNKNOWN, 'サーバーで不明なエラーが発生しました。');
             }
         }
+
+        return response()->error(self::UNKNOWN, 'サーバーで不明なエラーが発生しました。');
     }
 }
