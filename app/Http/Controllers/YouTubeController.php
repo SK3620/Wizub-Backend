@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\GoogleException;
 use Illuminate\Http\Request;
 use App\Services\YouTubeService;
 use App\Exceptions\Handler;
@@ -32,10 +33,10 @@ class YouTubeController extends Controller
             return response()->json($videos);
         } catch (Google_Service_Exception $e) {
             // Google API 特有のエラー処理
-            throw $e;
+            throw new GoogleException(detail: $e->getMessage());
         } catch (Google_Exception $e) {
             // Google Clientのエラー処理
-            throw $e;
+            throw new GoogleException(detail: $e->getMessage());
         } catch (Exception $e) {
             // その他のエラー
             throw $e;

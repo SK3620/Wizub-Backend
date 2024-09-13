@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Models\Subtitle;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException as ValidationValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,9 +58,12 @@ class Handler extends ExceptionHandler
             }
 
             //  GoogleAPIエラー（YouTube動画取得時のエラー)
-            if ($exception instanceof Google_Exception || $exception instanceof \Google_Service_Exception) {
+            if ($exception instanceof GoogleException) {
                 return $this->googleApiErrorResponse($exception);
             }
+            // if ($exception instanceof Google_Exception || $exception instanceof \Google_Service_Exception) {
+            //     return $this->googleApiErrorResponse($exception);
+            // }
 
             // HTTPエラー処理
             if ($this->isHttpException($exception)) {
@@ -88,12 +92,13 @@ class Handler extends ExceptionHandler
     }
 
     // GoogleAPIエラー（YouTube動画取得時のエラー)
-    private function googleApiErrorResponse($exception)
+    private function googleApiErrorResponse(GoogleException $exception)
     {
-        $message = 'YouTube動画の取得に失敗しました。';
-        $detail = $exception->getMessage();
+        $code = $exception->getCode();
+        $message = $exception->getMessage();
+        $detail = $exception->getDetail();
 
-        return response()->error(Response::HTTP_INTERNAL_SERVER_ERROR, $message, $detail);
+        return response()->error($code, $message, $detail);
     }
 
     // HTTPエラー
