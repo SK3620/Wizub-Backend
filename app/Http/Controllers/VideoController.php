@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckVideoAlreadySavedRequest;
+use App\Http\Requests\StoreVideoRequest;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use App\Exceptions\VideoSubtitleException;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class VideoController extends Controller
 {
@@ -44,19 +48,8 @@ class VideoController extends Controller
     }
 
     // 保存
-    public function store(Request $request)
+    public function store(StoreVideoRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'video_id' => 'required', // YouTube動画のID
-            'title' => 'required', // 動画のタイトル
-            'thumbnail_url' => 'required', // サムネイル
-            'subtitles' => 'required', // トランスクリプト
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
-        }
-
         // Userを取得
         $user = Auth::user();
 
