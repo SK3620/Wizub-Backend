@@ -15,7 +15,7 @@ class VideoSubtitleException extends Exception
     // 開発者向けの詳細エラーメッセージ
     protected $detail;
 
-    public function __construct($message = "この動画には字幕が含まれていません。", $code = Response::HTTP_INTERNAL_SERVER_ERROR, $detail = '')
+    public function __construct($message = '', $code = Response::HTTP_INTERNAL_SERVER_ERROR, $detail = '')
     {
         // 親クラスプロパティの初期化
         // Exception(親クラス)には、getMessage()やgetCode()メソッドなど定義済み
