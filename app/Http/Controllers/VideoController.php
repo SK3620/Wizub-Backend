@@ -140,6 +140,10 @@ class VideoController extends Controller
         $video->subtitles()->delete(); // まず関連するトランスクリプトを削除
         $video->delete(); // その後動画を削除
 
-        return response()->json(['message' => 'Video and its subtitles deleted successfully!']);
+            // レスポンスマクロ
+            return response()->success(Response::HTTP_OK, 'Video Deleted Successfully');
+        } catch (VideoSubtitleException $e) {
+            throw $e;
+        }
     }
 }

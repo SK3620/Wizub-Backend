@@ -126,6 +126,10 @@ class SubtitleController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Subtitles updated successfully!']);
+            // レスポンスマクロ
+            return response()->success(Response::HTTP_OK, 'Subtitles Updated Successfully');
+        } catch (VideoSubtitleException $e) {
+            throw $e;
+        }
     }
 }
