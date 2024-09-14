@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\Handler;
 use Google_Client;
 use Google_Service_YouTube;
 use Google_Service_Exception;
@@ -11,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Video;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpFoundation\Response;
 
 class YouTubeService
 {
