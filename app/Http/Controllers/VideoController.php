@@ -72,20 +72,13 @@ class VideoController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Video and subtitles saved successfully!']);
+        // レスポンスマクロ
+        return response()->success(Response::HTTP_OK, 'Subtitles Saved Successfully');
     }
 
     // 動画が保存済みか否かチェック
-    public function checkVideoAlreadySaved(Request $request)
+    public function checkVideoAlreadySaved(CheckVideoAlreadySavedRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'video_id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
-        }
-
         // ユーザー取得
         $user = Auth::user();
 
@@ -124,14 +117,15 @@ class VideoController extends Controller
         // 削除する動画を取得
         $video = $user->videos()->where('id', $id)->first();
 
-        // 該当する動画が存在しない場合、エラーレスポンスを返す
-        if (!$video) {
-            return response()->json(['error' => 'Video not found'], 404);
-        }
+        try {
+            // 該当する動画が存在しない場合、エラーレスポンスを返す
+            if ($video == null) {
+                throw new VideoSubtitleException(message: '動画の削除に失敗しました。', detail: 'Video not Found / Failed to delete data');
+            }
 
-        // 動画とその関連するトランスクリプトを削除
-        $video->subtitles()->delete(); // まず関連するトランスクリプトを削除
-        $video->delete(); // その後動画を削除
+            // 動画とその関連するトランスクリプトを削除
+            $video->subtitles()->delete(); // まず関連するトランスクリプトを削除
+            $video->delete(); // その後動画を削除
 
             // レスポンスマクロ
             return response()->success(Response::HTTP_OK, 'Video Deleted Successfully');

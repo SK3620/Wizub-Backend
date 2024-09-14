@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\VideoSubtitleException;
+use App\Http\Requests\UpdateSubtitleRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Response;
 
 class SubtitleController extends Controller
 {
@@ -39,7 +40,7 @@ class SubtitleController extends Controller
         } catch (ProcessFailedException $e) {
             // 失敗の例外処理
             Log::error('Process Failed Exception: ' . $e->getMessage());
-            throw new VideoSubtitleException(detail: $e->getMessage());
+            throw new VideoSubtitleException(message: 'この動画には字幕が含まれていません。', detail: $e->getMessage());
         } catch (Exception $e) {
             // その他のエラー
             throw $e;
