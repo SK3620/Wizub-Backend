@@ -40,7 +40,7 @@ class SubtitleController extends Controller
         } catch (ProcessFailedException $e) {
             // 失敗の例外処理
             Log::error('Process Failed Exception: ' . $e->getMessage());
-            throw new VideoSubtitleException(message: 'この動画には字幕が含まれていません。', detail: $e->getMessage());
+            throw new VideoSubtitleException(message: '字幕の取得に失敗しました。\nこの動画には字幕が含まれていない可能性があります。', detail: $e->getMessage());
         } catch (Exception $e) {
             // その他のエラー
             throw $e;
