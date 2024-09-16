@@ -25,7 +25,7 @@ class ApiResponseServiceProvider extends ServiceProvider
             return response()->json([
                 'code' => $status,
                 'message' => $message,
-                'detaial' => $detail,
+                'detail' => $detail,
             ], $status);
         });
 
