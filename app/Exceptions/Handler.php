@@ -52,9 +52,14 @@ class Handler extends ExceptionHandler
                 return $this->validationErrorResponse($exception);
             }
 
-            // 動画/字幕のCRUD処理周りのエラー
+            // 動画/字幕に関するエラー
             if ($exception instanceof VideoSubtitleException) {
                 return $this->videoSubtitleErrorResponse($exception);
+            }
+
+            // 字幕翻訳に関するエラー
+            if ($exception instanceof OpenAIException) {
+                return $this->openAIErrorResponse($exception);
             }
 
             //  GoogleAPIエラー（YouTube動画取得時のエラー)
@@ -79,7 +84,18 @@ class Handler extends ExceptionHandler
         return response()->error(Response::HTTP_BAD_REQUEST, '不正なリクエストです。', $exception->errors());
     }
 
+    // 動画/字幕に関するエラー
     public function videoSubtitleErrorResponse(VideoSubtitleException $exception)
+    {
+        $code = $exception->getCode();
+        $message = $exception->getMessage();
+        $detail = $exception->getDetail();
+
+        return response()->error($code, $message, $detail);
+    }
+
+    // 字幕翻訳に関するエラー
+    public function openAIErrorResponse(OpenAIException $exception)
     {
         $code = $exception->getCode();
         $message = $exception->getMessage();
