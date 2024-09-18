@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('api')->get('/get_subtitles', 'App\Http\Controllers\SubtitleController@getSubtitles');
     Route::middleware('api')->put('/update_subtitles', 'App\Http\Controllers\SubtitleController@update');
     Route::middleware('api')->get('/get_saved_subtitles', 'App\Http\Controllers\SubtitleController@getSavedSubtitles');
-    Route::middleware('api')->get('/get_open_ai_answer', 'App\Http\Controllers\OpenAIController@getOpenAIResponse');
+    Route::middleware('api')->get('/translate_subtitles', 'App\Http\Controllers\OpenAIController@translateSubtitles');
     Route::middleware('api')->post('/store_subtitles', 'App\Http\Controllers\VideoController@store');
     Route::middleware('api')->get('/get_saved_videos', 'App\Http\Controllers\VideoController@index');
     Route::middleware('api')->delete('/delete_saved_videos', 'App\Http\Controllers\VideoController@delete');
