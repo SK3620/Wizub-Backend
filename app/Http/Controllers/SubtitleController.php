@@ -122,4 +122,67 @@ class SubtitleController extends Controller
             throw $e;
         }
     }
+
+    // 以下、Googleの無料翻訳APIを使用した翻訳処理 ※翻訳精度が大きく不安定なため、使用中断中
+    /*
+    public function translateSubtitles(Request $request)
+    {
+        $subtitles = $request->input('subtitles');
+
+        // 非同期でGoogle Apps Script APIにリクエストを送る
+        $client = new \GuzzleHttp\Client();
+        $promises = [];
+
+        // 各字幕に対して翻訳リクエストを送る
+        foreach ($subtitles as $subtitle) {
+            $subtitleId = $subtitle['subtitle_id'];
+            $text = $subtitle['en_subtitle'];
+
+            // APIのURLを構築
+            $url = "https://script.google.com/macros/s/AKfycbxqTtw0kIGObLgF2LHn2a7x8Q_PIHCxZKugwNBvy-zvBYyhbrhzwhcnZ6eiae2EJcHm/exec?text={$text}&source=en&target=ja&subtitle_id={$subtitleId}";
+
+            // 非同期リクエストを配列に保存
+            $promises[] = $client->getAsync($url);
+        }
+
+        // すべての翻訳リクエストが完了するのを待つ
+        $responses = Utils::settle($promises)->wait();
+
+        // 翻訳結果を整理する
+        $translatedResults = [];
+        foreach ($responses as $index => $response) {
+            // インデックスを利用して元の字幕データを取得
+            $subtitle = $subtitles[$index];
+
+            if ($response['state'] === 'fulfilled') {
+                $body = json_decode($response['value']->getBody(), true);
+
+                // 翻訳された結果を配列に追加
+                $translatedResults[] = [
+                    'id' => $subtitle['id'],
+                    'subtitle_id' => $subtitle['subtitle_id'],
+                    'en_subtitle' => $subtitle['en_subtitle'],
+                    'ja_subtitle' => $body['text'] ?? '', // 翻訳された日本語字幕
+                    'memo' => $subtitle['memo'],
+                    'start' => $subtitle['start'],
+                    'duration' => $subtitle['duration'],
+                ];
+            } else {
+                // 失敗した場合も元の字幕情報を保持
+                $translatedResults[] = [
+                    'id' => $subtitle['id'],
+                    'subtitle_id' => $subtitle['subtitle_id'],
+                    'en_subtitle' => $subtitle['en_subtitle'],
+                    'ja_subtitle' => '', // 翻訳失敗時は空文字
+                    'memo' => $subtitle['memo'],
+                    'start' => $subtitle['start'],
+                    'duration' => $subtitle['duration'],
+                ];
+            }
+        }
+
+        // 翻訳結果を返す
+        return $translatedResults;
+    }
+　　*/
 }
