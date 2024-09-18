@@ -33,6 +33,21 @@ class SubtitleController extends Controller
                 throw new ProcessFailedException($process); // プロセス失敗時に例外をスロー
             }
 
+            // 以下、Googleの無料翻訳APIを使用した翻訳処理 ※翻訳精度が大きく不安定なため、使用中断中
+            /* 
+            // 成功した場合の処理
+            $subtitles = json_decode($process->getOutput(), true); // 字幕を取得してJSONデコード
+
+            // 翻訳処理に字幕データを渡す
+            $translatedResults = $this->translateSubtitles(new Request(['subtitles' => $subtitles['subtitles']]));
+
+            // 翻訳結果を返却
+            return response()->json([
+                'subtitles' => $translatedResults
+            ]);
+            // return response()->json($translatedResults->getData());
+            */
+
             // 成功した場合の処理
             $subtitles = $process->getOutput();
             // フォーマット化したjsonレスポンスを返却
