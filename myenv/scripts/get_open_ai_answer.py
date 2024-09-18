@@ -11,14 +11,15 @@ openai.api_key = api_key
 
 def get_openai_response(content):
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-0125",
+        # model="gpt-3.5-turbo-0125",
+        model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
                 "content": (
-                    "あなたは英語と日本語のエキスパートです。前後の文脈も考慮し、英文を自然な日本語に訳して、JSON形式で返答してください。"
-                    "フォーマットは以下にしてください。\n"
-                    '''{"（ID）": "（日本語訳）, （ID）": "（日本語訳）", ... }'''
+                    "あなたは英語と日本語のエキスパートです。英文を自然な日本語に訳し、翻訳する英文の個数に応じた(ID)を付けて、JSON形式で返却してください。"
+                    "フォーマットは以下にしてください。(ID）はInt型です。\n"
+                    '{"（ID）": "（日本語訳）, （ID）": "（日本語訳）"..., }'
                 ),
             },
             {
