@@ -15,7 +15,7 @@ def get_transcript(video_id):
             'duration': 3.0 # 字幕表示時間
         })
 
-    return {'subtitles': transcripts}
+    return {'subtitles': transcripts2}
 
     transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
 
