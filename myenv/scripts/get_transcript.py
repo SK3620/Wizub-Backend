@@ -3,6 +3,20 @@ import json
 from youtube_transcript_api import YouTubeTranscriptApi
 
 def get_transcript(video_id):
+
+    transcripts2 = []
+    transcripts2.append({
+            'id': 44, # 暫定で一意性を保証しておく DBへの保存時、プライマリーキーとして自動インクリメント
+            'subtitle_id': 44, # それぞれの動画のトランスクリプトのID
+            'en_subtitle': '英語字幕ですよ', # 英語字幕
+            'ja_subtitle': '日本語字幕ですよ', # 日本語字幕 日本語字幕は取得しないため空
+            'memo': '' , # 学習メモ
+            'start': 2.0, # 字幕表示開始時間
+            'duration': 3.0 # 字幕表示時間
+        })
+
+    return {'subtitles': transcripts}
+
     transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
 
     # 英語の字幕を取得し保存
