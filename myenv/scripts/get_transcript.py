@@ -3,7 +3,15 @@ import json
 from youtube_transcript_api import YouTubeTranscriptApi
 
 def get_transcript(video_id):
-    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+
+    proxy = 'http://@geo.iproyal.com:12321'
+    proxy_auth = 'TJQuK1LO6WHzpCbC:rNO1QDteo9jkP4l6'
+    proxies = {
+    'http': f'http://{proxy_auth}@{proxy}',
+    # 'https': f'http://{proxy_auth}@{proxy}'
+    }
+
+    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, proxies=proxies)
 
     # 英語の字幕を取得し保存
     transcript = transcript_list.find_transcript(['en'])
