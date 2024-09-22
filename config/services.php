@@ -37,5 +37,9 @@ return [
 
     'you_tube' => [
         'api_key' => env('GOOGLE_API_KEY')
-    ]
+    ],
+
+    'proxy' => [
+        'proxy_server_url' => env('PROXY_SERVER_URL'),
+    ],
 ];

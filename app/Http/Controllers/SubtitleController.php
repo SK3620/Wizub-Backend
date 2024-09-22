@@ -19,11 +19,14 @@ class SubtitleController extends Controller
     {
         $video_id = $request->query('video_id');
 
+        // プロキシサーバーURL
+        $proxy = config('services.proxy.proxy_server_url');
+
         // Pythonスクリプトのパス
         $scriptPath = base_path('myenv/scripts/get_transcript.py');
 
         // Processコンポーネントは、外部プログラムやコマンドをPHPスクリプト内で実行するためのもの
-        $process = new Process(['python3', $scriptPath, $video_id]);
+        $process = new Process(['python3', $scriptPath, $video_id, $proxy]);
         // 実行
         $process->run();
 
