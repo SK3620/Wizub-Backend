@@ -2,16 +2,16 @@ import sys
 import json
 from youtube_transcript_api import YouTubeTranscriptApi
 
-def get_transcript(video_id):
+# 引数を取得
+video_id = sys.argv[1]
+proxy = sys.argv[2]
 
-    proxy = 'http://@geo.iproyal.com:12321'
-    proxy_auth = 'TJQuK1LO6WHzpCbC:rNO1QDteo9jkP4l6'
-    proxies = {
-    'http': f'http://{proxy_auth}@{proxy}',
-    # 'https': f'http://{proxy_auth}@{proxy}'
-    }
+def get_transcript(video_id, proxy):
 
-    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, proxies=proxies)
+    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, proxies = {
+        'http': proxy,
+        'https': proxy
+    })
 
     # 英語の字幕を取得し保存
     transcript = transcript_list.find_transcript(['en'])
@@ -55,5 +55,6 @@ def get_transcript(video_id):
 
 if __name__ == "__main__":
     video_id = sys.argv[1]
-    transcripts = get_transcript(video_id)
+    proxy = sys.argv[2]
+    transcripts = get_transcript(video_id, proxy)
     print(json.dumps(transcripts, ensure_ascii=False))
