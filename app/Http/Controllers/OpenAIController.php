@@ -21,6 +21,7 @@ class OpenAIController extends Controller
         Log::debug($content);
         // 配列の要素数
         $arrayCount = $request->query('array_count');
+        $totalSubtitlesCount = $request->query('total_subtitles_count');
 
         // OpenAI APIキー取得
         $apiKey = config('services.open_ai.api_key');
