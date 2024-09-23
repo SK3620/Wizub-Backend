@@ -17,10 +17,11 @@ class OpenAIController extends Controller
     {
         // 翻訳する英語字幕を格納する配列
         $content = $request->query('content');
-        Log::debug('翻訳する英文↓');
-        Log::debug($content);
         // 配列の要素数
-        $arrayCount = $request->query('array_count');
+        $totalSubtitlesCount = $request->query('total_subtitles_count');
+
+        Log::debug('翻訳対象の英文:', ['content' => $content]);
+        Log::debug('翻訳対象となる字幕全体の要素数:', ['totalCount' => $totalSubtitlesCount]);
 
         // OpenAI APIキー取得
         $apiKey = config('services.open_ai.api_key');
@@ -30,9 +31,9 @@ class OpenAIController extends Controller
 
         try {
             // 配列の要素数を用いて、翻訳量の制限を判定
-            if ($arrayCount > 100) {
-                throw new OpenAIException(message: '翻訳する字幕数が多すぎます。\n翻訳したい字幕を最大100個まで選択して翻訳を行なってください。', detail: 'Too Many Subtitles');
-            }
+            // if ($totalSubtitlesCount > 100) {
+            //     throw new OpenAIException(message: '翻訳する字幕数が多すぎます。\n翻訳したい字幕を最大100個まで選択して翻訳を行なってください。', detail: 'Too Many Subtitles');
+            // }
 
             // Pythonスクリプトを実行 
             $process = new Process(['python3', $scriptPath, $apiKey, $content]);
