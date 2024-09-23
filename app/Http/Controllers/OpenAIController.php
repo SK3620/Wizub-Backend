@@ -31,9 +31,9 @@ class OpenAIController extends Controller
 
         try {
             // 配列の要素数を用いて、翻訳量の制限を判定
-            if ($arrayCount > 100) {
-                throw new OpenAIException(message: '翻訳する字幕数が多すぎます。\n翻訳したい字幕を最大100個まで選択して翻訳を行なってください。', detail: 'Too Many Subtitles');
-            }
+            // if ($totalSubtitlesCount > 100) {
+            //     throw new OpenAIException(message: '翻訳する字幕数が多すぎます。\n翻訳したい字幕を最大100個まで選択して翻訳を行なってください。', detail: 'Too Many Subtitles');
+            // }
 
             // Pythonスクリプトを実行 
             $process = new Process(['python3', $scriptPath, $apiKey, $content]);
