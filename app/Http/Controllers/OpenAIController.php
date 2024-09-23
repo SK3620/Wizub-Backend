@@ -17,11 +17,11 @@ class OpenAIController extends Controller
     {
         // 翻訳する英語字幕を格納する配列
         $content = $request->query('content');
-        Log::debug('翻訳する英文↓');
-        Log::debug($content);
         // 配列の要素数
-        $arrayCount = $request->query('array_count');
         $totalSubtitlesCount = $request->query('total_subtitles_count');
+
+        Log::debug('翻訳対象の英文:', ['content' => $content]);
+        Log::debug('翻訳対象となる字幕全体の要素数:', ['totalCount' => $totalSubtitlesCount]);
 
         // OpenAI APIキー取得
         $apiKey = config('services.open_ai.api_key');
