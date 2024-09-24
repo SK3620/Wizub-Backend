@@ -6,7 +6,6 @@ use App\Exceptions\OpenAIException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\VideoSubtitleException;
 use Illuminate\Http\Request;
 use Exception;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
