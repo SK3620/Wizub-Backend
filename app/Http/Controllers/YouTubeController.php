@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exceptions\GoogleException;
 use Illuminate\Http\Request;
 use App\Services\YouTubeService;
-use App\Exceptions\Handler;
 use Exception;
 use Google_Exception;
 use Google_Service_Exception;
