@@ -16,6 +16,9 @@ class YouTubeService
     protected $client;
     protected $youtube;
 
+    // 動画の最大取得件数
+    protected $maxResutls = 30;
+
     public function __construct()
     {
         $this->client = new Google_Client();
@@ -28,7 +31,7 @@ class YouTubeService
         $parameters = [
             'q' => $query, // 検索値
             'type' => 'video',
-            'maxResults' => 10, // 最大10件取得
+            'maxResults' => $this->maxResutls, // 動画の最大取得件数
         ];
 
         try {

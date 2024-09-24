@@ -8,6 +8,7 @@ proxy = sys.argv[2]
 
 def get_transcript(video_id, proxy):
 
+    # プロキシサーバーを仲介する
     transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, proxies = {
         'http': proxy,
         'https': proxy
