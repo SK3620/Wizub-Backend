@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('api')->post('/sign_up', 'App\Http\Controllers\AuthController@signUp');
 Route::middleware('api')->post('/sign_in', 'App\Http\Controllers\AuthController@signIn');
 Route::middleware('api')->post('/check_email', 'App\Http\Controllers\AuthController@checkEmail');
+Route::middleware('api')->delete('/delete_account', 'App\Http\Controllers\AuthController@deleteAccount');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('api')->get('/search', 'App\Http\Controllers\YouTubeController@search');
