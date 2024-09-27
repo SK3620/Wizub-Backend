@@ -52,6 +52,11 @@ class Handler extends ExceptionHandler
                 return $this->validationErrorResponse($exception);
             }
 
+            // アカウント削除時のエラー
+            if ($exception instanceof AuthException) {
+                return $this->authErrorResponse($exception);
+            }
+
             // 動画/字幕に関するエラー
             if ($exception instanceof VideoSubtitleException) {
                 return $this->videoSubtitleErrorResponse($exception);
@@ -82,6 +87,16 @@ class Handler extends ExceptionHandler
     {
         // エラーメッセージをフォーマットして返す
         return response()->error(Response::HTTP_BAD_REQUEST, '不正なリクエストです。', $exception->errors());
+    }
+
+    // アカウント削除に関するエラー
+    public function authErrorResponse(AuthException $exception)
+    {
+        $code = $exception->getCode();
+        $message = $exception->getMessage();
+        $detail = $exception->getDetail();
+
+        return response()->error($code, $message, $detail);
     }
 
     // 動画/字幕に関するエラー
