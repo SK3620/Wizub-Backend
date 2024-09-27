@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AuthException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -66,5 +70,36 @@ class AuthController extends Controller
             'is_duplicated_email' => $emailExists,
             'api_token' => ''
         ]);
+    }
+
+    // アカウント削除
+    public function deleteAccount(Request $request)
+    {
+        // 入力されたEメールとパスワードを取得
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        try {
+            // ユーザーを検索
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                throw new AuthException(message: 'メールアドレスが正しくありません。', detail: 'Input email not found');
+            }
+
+            if (!Hash::check($password, $user->password)) {
+                throw new AuthException(message: 'パスワードが正しくありません。', detail: 'Input password not correct');
+            }
+
+            $user->delete();
+
+            return response()->json(['message' => 'アカウントが正常に削除されました'], 200);
+        } catch (AuthException $e) {
+            Log::error('Unauthorized: ' . $e->getMessage());
+            throw $e;
+        } catch (Exception $e) {
+            Log::error('Failed to delete account' . $e->getMessage());
+            throw new AuthException(message: 'アカウントの削除に失敗しました。', detail: 'Failed to delete account');
+        }
     }
 }
