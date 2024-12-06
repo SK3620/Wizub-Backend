@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\VideoSubtitleException;
 use Symfony\Component\HttpFoundation\Response;
-
+use App\Services\CheckTrialUserService;
 
 class VideoController extends Controller
 {
@@ -50,6 +50,9 @@ class VideoController extends Controller
     // 保存
     public function store(StoreVideoRequest $request)
     {
+        // お試し利用中か否か判定
+        CheckTrialUserService::checkTrialUser();
+
         // Userを取得
         $user = Auth::user();
 

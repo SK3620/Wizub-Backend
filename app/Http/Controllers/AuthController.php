@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -45,10 +44,16 @@ class AuthController extends Controller
 
         $token = $user->createToken('api_token')->plainTextToken;
 
+        $trialName = config('services.trial_use.trial_name');
+        $trialEmail = config('services.trial_use.trial_email');
+        $trialPassword = config('services.trial_use.trial_password');
+        // お試し利用中か否か
+        $isTrialUse = ($request->email == $trialEmail && $request->password == $trialPassword);
+
         return response()->json([
-            'name' => '',
-            'email' => $request->email,
-            'password' => $request->password,
+            'name' => $isTrialUse ? $trialName : $request->name,
+            'email' => $isTrialUse ? '' : $request->email,
+            'password' => $isTrialUse ? '' : $request->password,
             'is_duplicated_email' => null,
             'api_token' => $token
         ]);

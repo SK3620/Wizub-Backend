@@ -42,4 +42,10 @@ return [
     'proxy' => [
         'proxy_server_url' => env('PROXY_SERVER_URL'),
     ],
+
+    'trial_use' => [
+        'trial_name' => env('TRIAL_USERNAME'),
+        'trial_email' => env('TRIAL_EMAIL'),
+        'trial_password' => env('TRIAL_PASSWORD'),
+    ],
 ];

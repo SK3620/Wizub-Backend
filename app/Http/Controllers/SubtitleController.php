@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Response;
+use App\Services\CheckTrialUserService;
 
 class SubtitleController extends Controller
 {
@@ -106,6 +107,9 @@ class SubtitleController extends Controller
     // 字幕を更新
     public function update(UpdateSubtitleRequest $request)
     {
+        // お試し利用中か否か判定
+        CheckTrialUserService::checkTrialUser();
+
         // ユーザーを取得
         $user = Auth::user();
 

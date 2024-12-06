@@ -10,6 +10,7 @@ use Throwable;
 use Google_Service_Exception;
 use Google_Exception;
 
+
 class Handler extends ExceptionHandler
 {
     // 不明なエラー
@@ -72,6 +73,11 @@ class Handler extends ExceptionHandler
                 return $this->googleApiErrorResponse($exception);
             }
 
+            // お試し利用中による制限機能へのアクセスエラー
+            if ($exception instanceof FeatureAccessDeniedInTrial) {
+                return $this->featureAccessDeniedInTrial($exception);
+            }
+
             // HTTPエラー処理
             if ($this->isHttpException($exception)) {
                 return $this->apiErrorResponse($request, $exception);
@@ -121,6 +127,16 @@ class Handler extends ExceptionHandler
 
     // GoogleAPIエラー（YouTube動画取得時のエラー)
     private function googleApiErrorResponse(GoogleException $exception)
+    {
+        $code = $exception->getCode();
+        $message = $exception->getMessage();
+        $detail = $exception->getDetail();
+
+        return response()->error($code, $message, $detail);
+    }
+
+    // お試し利用中による制限機能へのアクセスエラー
+    private function featureAccessDeniedInTrial(FeatureAccessDeniedInTrial $exception) 
     {
         $code = $exception->getCode();
         $message = $exception->getMessage();

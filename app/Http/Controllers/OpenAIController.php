@@ -9,11 +9,15 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Exception;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
+use App\Services\CheckTrialUserService;
 
 class OpenAIController extends Controller
 {
     public function translateSubtitles(Request $request)
     {
+        // お試し利用中か否か判定
+        CheckTrialUserService::checkTrialUser();
+        
         // 翻訳する英語字幕を格納する配列
         $content = $request->query('content');
         // 配列の要素数
