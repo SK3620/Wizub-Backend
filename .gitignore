@@ -17,3 +17,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/Applications/MAMP/htdocs/swiftui-app-backend/myenv/lib/python3.12/site-packages
