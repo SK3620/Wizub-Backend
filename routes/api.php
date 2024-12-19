@@ -18,6 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('api')->get('/get_trial_user_info', 'App\Http\Controllers\TrialUseController@getTrialUserInfo');
+
 Route::middleware('api')->post('/sign_up', 'App\Http\Controllers\AuthController@signUp');
 Route::middleware('api')->post('/sign_in', 'App\Http\Controllers\AuthController@signIn');
 Route::middleware('api')->post('/check_email', 'App\Http\Controllers\AuthController@checkEmail');
