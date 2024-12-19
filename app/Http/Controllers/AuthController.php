@@ -51,7 +51,7 @@ class AuthController extends Controller
         $isTrialUse = ($request->email == $trialEmail && $request->password == $trialPassword);
 
         return response()->json([
-            'name' => $isTrialUse ? $trialName : $request->name,
+            'name' => $isTrialUse ? $trialName : $user->name,
             'email' => $isTrialUse ? '' : $request->email,
             'password' => $isTrialUse ? '' : $request->password,
             'is_duplicated_email' => null,
