@@ -109,10 +109,13 @@ class VideoController extends Controller
     }
 
     // 保存した動画を削除
-    public function delete(Request $request)
+    public function delete($id)
     {
         // 削除するVideoモデルのレコードID
-        $id = $request->query('id');
+        // $id = $request->query('id');
+
+        // $idをintにキャスト
+        $id = (int) $id;
 
         // Userを取得
         $user = Auth::user();

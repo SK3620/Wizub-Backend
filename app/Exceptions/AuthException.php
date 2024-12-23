@@ -2,31 +2,13 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use Symfony\Component\HttpFoundation\Response;
+use App\Exceptions\BaseException;
 
-class AuthException extends Exception
+class AuthException extends BaseException
 {
-    // 以下二つのプロパティは親クラスに元々あるため、再定義の必要はなし
-    // あくまで、明示的に再定義することで、保守/可読性の向上に繋げる
-    protected $message;
-    protected $code;
-
-    // 開発者向けの詳細エラーメッセージ
-    protected $detail;
-
-    public function __construct($message = "認証情報が正しくありません。", $code = Response::HTTP_UNAUTHORIZED, $detail = '')
+    public function __construct($message = "認証情報が正しくありません。", $code = Response::HTTP_UNAUTHORIZED, $detail = "")
     {
-        // 親クラスプロパティの初期化
-        // Exception(親クラス)には、getMessage()やgetCode()メソッドなど定義済み
-        parent::__construct($message, $code);
-
-        $this->detail = $detail;
-    }
-
-    // 開発者向けの詳細エラーメッセージ
-    public function getDetail()
-    {
-        return $this->detail;
+        parent::__construct($message, $code, $detail);
     }
 }
