@@ -16,9 +16,9 @@ use App\Services\CheckTrialUserService;
 class SubtitleController extends Controller
 {
     // 指定の動画の字幕取得
-    public function getSubtitles(Request $request)
+    public function getSubtitles($video_id)
     {
-        $video_id = $request->query('video_id');
+        // $video_id = $request->query('video_id');
 
         // プロキシサーバーURL
         $proxy = config('services.proxy.proxy_server_url');
@@ -67,13 +67,13 @@ class SubtitleController extends Controller
     }
 
     // すでに保存済みの字幕を取得
-    public function getSavedSubtitles(Request $request)
+    public function getSavedSubtitles($video_id)
     {
         // Userを取得
         $user = Auth::user();
 
         // リクエストからvideo_idを取得
-        $video_id = $request->query('video_id');
+        // $video_id = $request->query('video_id');
 
         //video_idでVideoモデルを検索し、その字幕を取得
         $video = $user->videos()->where('video_id', $video_id)->with('subtitles')->first();
@@ -105,8 +105,11 @@ class SubtitleController extends Controller
     }
 
     // 字幕を更新
-    public function update(UpdateSubtitleRequest $request)
+    public function update(UpdateSubtitleRequest $request, $id)
     {
+        // $idをintにキャスト
+        $id = (int) $id;
+
         // お試し利用中か否か判定
         CheckTrialUserService::checkTrialUser();
 
@@ -114,7 +117,7 @@ class SubtitleController extends Controller
         $user = Auth::user();
 
         // リクエストからvideoのidを取得
-        $id = $request->query('id');
+        // $id = $request->query('id');
 
         // video_idでVideoモデルを検索し、そのトランスクリプトを取得
         $video = $user->videos()->where('id', $id)->with('subtitles')->first();

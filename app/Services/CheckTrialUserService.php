@@ -16,7 +16,7 @@ class CheckTrialUserService
 
         // ユーザーのメールアドレスがお試し期間中のメールアドレスと一致する場合
         if ($user->email === $trialEmail) {
-            throw new FeatureAccessDeniedInTrial(message: 'この機能はお試し期間中はご利用できません。アカウントを作成する必要があります。', detail: "Feature Access Denied In Trial");
+            throw new FeatureAccessDeniedInTrial(detail: "Feature Access Denied In Trial");
         }
     }
 }

@@ -19,9 +19,9 @@ class OpenAIController extends Controller
         CheckTrialUserService::checkTrialUser();
         
         // 翻訳する英語字幕を格納する配列
-        $content = $request->query('content');
-        // 配列の要素数
-        $totalSubtitlesCount = $request->query('total_subtitles_count');
+        $content = (string) $request->content;
+        // 配列の要素数 
+        $totalSubtitlesCount = (int) $request->total_subtitles_count;
 
         Log::debug('翻訳対象の英文:', ['content' => $content]);
         Log::debug('翻訳対象となる字幕全体の要素数:', ['totalCount' => $totalSubtitlesCount]);

@@ -31,8 +31,6 @@ class AuthController extends Controller
 
     public function signIn(Request $request)
     {
-        // アプリ側でバリデーションを実装しているためlaravel側でのバリデーションは不要
-
         // usersテーブルから指定されたemailカラムの値に一致する最初のレコードを取得
         $user = User::where('email', $request->email)->first();
 
@@ -81,8 +79,8 @@ class AuthController extends Controller
     public function deleteAccount(Request $request)
     {
         // 入力されたEメールとパスワードを取得
-        $email = $request->input('email');
-        $password = $request->input('password');
+        $email = $request->email;
+        $password = $request->password;
 
         try {
             // ユーザーを検索
