@@ -29,7 +29,7 @@ class ApiResponseServiceProvider extends ServiceProvider
             ], $status);
         });
 
-        // レスポンスマクロを用いて、Responseに'success'というカスタムメソッドを追加
+        // レスポンスマクロを用いて、Responseに'success'というカスタムメソッドを追加し、一貫したエラーレスポンスを返す
         // API通信成功時、フロント（SwiftUI側）に特に何も値を返却しない場合に使用
         Response::macro('success', function ($status, $message) {
             return response()->json([

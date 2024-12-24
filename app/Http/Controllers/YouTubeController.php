@@ -21,8 +21,6 @@ class YouTubeController extends Controller
 
     public function search(Request $request)
     {
-        throw new GoogleException(detail: "jflajlllllll");
-
         // 検索値取得
         $query = $request->query('query');
 

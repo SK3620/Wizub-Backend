@@ -9,11 +9,6 @@ class BaseException extends Exception
     // 開発者向けの詳細エラーメッセージ
     protected $detail;
 
-    // 以下二つのプロパティは親クラスに元々あるため、再定義の必要はなし
-    // あくまで、明示的に再定義することで、保守/可読性の向上に繋げる
-    protected $message;
-    protected $code;
-
     public function __construct($message = "", $code = 0, $detail = "")
     {
         // 親クラスプロパティの初期化
