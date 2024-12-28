@@ -1,66 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Wizub
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Wizub（ウィザブ）は好きなYouTube動画を用いて、それにリアルタイムで連動する字幕とともに英語学習ができるアプリです。
 
-## About Laravel
+## サービスのURL
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+https://apps.apple.com/jp/app/wizub-%E5%AD%97%E5%B9%95-%E5%8B%95%E7%94%BB%E3%81%A7%E8%8B%B1%E8%AA%9E%E5%AD%A6%E7%BF%92/id6714475358
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## サービスへの想い・概要
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+このアプリは、「自分の好きなYouTube動画」＋「日本語＋英語字幕の二重字幕」を組み合わせ、効率的かつ楽しい英語学習を実現させたいという想いから生まれました。
 
-## Learning Laravel
+動画の再生に連動して、動画内の細かいシーンごとに対応した英語＆日本語字幕がリアルタイムで画面に表示されていきます。そして、ユーザーは英語学習に使用したい動画を自由に選択することができます。これにより、自分の興味のある動画を通じて、楽しく効率的に英語表現や発音を学ぶことができます。
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 機能一覧
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| **認証画面**                                                                                   | **動画検索画面**                                                                                   | **勉強画面１**                                                                                   |
+|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| ![Image 1](https://github.com/user-attachments/assets/805c9c26-e314-4bc6-9d7f-ab54e2b489c0)      | ![Image 2](https://github.com/user-attachments/assets/4ba8339a-188d-4702-9ffd-ac046a7dfd12)      | ![Image 3](https://github.com/user-attachments/assets/6ae602e1-133b-4425-8cd4-8321304383ce)      |
+| シンプルな認証機能と登録せずにアプリをお試しいただくためのトライアル機能を実装しました。| YouTube動画検索機能を実装しました。| 英語字幕の取得&表示機能、動画の再生速度変更、ポーズ、リピート、動画＆字幕の保存機能等を実装しました。|
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| **勉強画面２**                                                                                   | **勉強画面３**                                                                           | **保存動画一覧画面**                                                                             |
+|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| ![Image 4](https://github.com/user-attachments/assets/2020b344-7331-43d9-814e-51adab75f9b5)      | ![Image 5](https://github.com/user-attachments/assets/e7e69fa3-77ab-4989-b62d-6a68b0e59c14)    | ![Image 6](https://github.com/user-attachments/assets/b9c59ac6-da32-408c-8d4f-3c4e310b1782)    |
+| ChatGPTを活用した英語字幕の翻訳機能を実装しました。AIを駆使し、前後の文脈を考慮させ、より自然で流暢な日本語訳を目指します。| それぞれのシーンに対応する字幕の編集機能、学習メモ機能を実装しました。| 保存した動画を一覧に表示し、復習することができます。                                         |
 
-## Laravel Sponsors
+## デモ動画
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+https://github.com/user-attachments/assets/8346b0fd-dee0-4318-8137-b235fc860b3e
 
-### Premium Partners
+## 使用技術
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### **フロントエンド**
 
-## Contributing
+- **Swift 5.10**
+- **SwiftUI**
+- **Combine（MVVM）**
+- **YouTubePlayerKit 1.9.0**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### **バックエンド**
 
-## Code of Conduct
+- **PHP 8.3**
+- **Laravel 10.48.25**
+- **Laravel Sanctum 3.3**
+- **Python 3.12.6**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### **ネットワーク**
 
-## Security Vulnerabilities
+- **Alamofire 5.9.1**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### **データベース・ローカル環境**
 
-## License
+- **MAMP 6.9**
+    - **MySQL 5.7.39**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### **API**
+
+- **Google API Client 2.18.2（YouTube動画の取得）**
+- **YouTube Transcript API 0.6.2（YouTube動画字幕の取得）**
+- **OpenAI API 0.28.0（ChatGPTによる翻訳に利用）**
+
+### **バージョン管理**
+
+- **Git**
+- **GitHub**
+- **SourceTree**
+
+### **デプロイ**
+
+- **Heroku**
+
+### **パッケージ管理**
+
+- **Swift Package Manager**
+- **CocoaPods**
+
+### その他
+
+- **Postman**
+
+## ER図
+
+![image](https://github.com/user-attachments/assets/3570a9d5-04b3-4eaf-a9ee-fd5ae7ca1679)
