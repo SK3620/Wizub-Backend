@@ -71,7 +71,29 @@ proxy = sys.argv[2]
 def get_transcript(video_id, proxy):
     transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
 
+    # 最初にenを取得し、それが存在しない場合はjaを取得する
+    # transcript = transcript_list.find_transcript(['en', 'ja'])
+
+    # 最初に手動作成された字幕を取得し、それが存在しない場合は自動生成された字幕を取得する
     transcript = transcript_list.find_transcript(['en'])
+
+    translated_transcript = transcript.translate('ja')
+    result = translated_transcript.fetch()
+    return {
+        '結果': result,
+    }
+
+    # ja_transcript = transcript_list.find_manually_created_transcript(['ja'])
+    ja_transcript2 = transcript_list.find_generated_transcript(['ja'])
+    return {
+        'translation_languages': transcript.translation_languages,
+    }
+
+    # transcript_data = transcript.fetch()
+    # if 'ja' in [lang['language_code'] for lang in transcript.translation_languages]:
+    #     ja_transcript = transcript.translate('ja').fetch()
+    #     for i in range(len(transcript_data)):
+    #         transcript_data[i]['ja_subtitle'] = ja_transcript[i]['text']
 
     return {
         'video_id': transcript.video_id,
@@ -80,6 +102,7 @@ def get_transcript(video_id, proxy):
         'is_generated': transcript.is_generated,
         'is_translatable': transcript.is_translatable,
         'translation_languages': transcript.translation_languages,
+        'ja_subtitle': ja_transcript,
     }
 
     # IDのカウンターを初期化
