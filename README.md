@@ -1,6 +1,9 @@
 ## Wizub
 Wizub（ウィザブ）は、「自分の好きなYouTube動画」を「日本語＋英語字幕の二重字幕」で、英語学習できるアプリです。
 
+iOSアプリ（SwiftUI）側のコードはこちら⬇︎<br>
+https://github.com/SK3620/Wizub#wizub
+
 ## サービスのURL
 https://apps.apple.com/jp/app/wizub-%E5%AD%97%E5%B9%95-%E5%8B%95%E7%94%BB%E3%81%A7%E8%8B%B1%E8%AA%9E%E5%AD%A6%E7%BF%92/id6714475358
 
